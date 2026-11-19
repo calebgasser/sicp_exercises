@@ -1,0 +1,64 @@
+; Exercise 1.1: Below is a sequence of expressions.
+; What is the result printed by the interpreter in response to each expression?
+; Assume that the sequence is to be evaluated in the order in which it is presented.
+(display 10) ;10
+(newline)
+(display "(+ 5 3 4) -- ")
+(display (+ 5 3 4)) ; 12
+(newline)
+(display "(- 9 1) -- ")
+(display (- 9 1)) ; 8
+(newline)
+(display "(/ 6 2) -- ")
+(display (/ 6 2)) ; 3
+(newline)
+(display "(+ (* 2 4) (- 4 6)) -- ")
+(display (+ (* 2 4) (- 4 6))) ; 6
+(newline)
+(define a 3)
+(display "(define a 3) -- ")
+(display a) ; 3
+(newline)
+(define b (+ a 1))
+(display "(define b (+ a 1)) -- ")
+(display b) ; 4
+(newline)
+(display "(+ a b (* a b)) -- ")
+(display (+ a b (* a b))) ; 19
+(newline)
+(display "(= a b) -- ")
+(display (= a b)) ; #f
+(newline)
+(display "(if (and (> b a) (< b (* a b)))
+    b
+    a) -- ")
+(display (if (and (> b a) (< b (* a b)))
+    b
+    a)) ; b = 4
+(newline)
+(display "(cond ((= a 4) 6)
+      ((= b 4) (+ 6 7 a))
+      (else 25)) -- ")
+(display (cond ((= a 4) 6)
+      ((= b 4) (+ 6 7 a))
+      (else 25))) ; 16
+(newline)
+(display "(+ 2 (if (> b a) b a)) -- ")
+(display (+ 2 (if (> b a) b a))) ; 6
+(newline)
+(display "(* (cond ((> a b) a)
+         ((< a b) b)
+         (else -1))
+   (+ a 1)) -- ")
+(display (* (cond ((> a b) a)
+         ((< a b) b)
+         (else -1))
+	    (+ a 1))) ; 16
+(newline)
+; Exercise 1.2
+(define my-result (/ (+ 6 4 (- 2 (- 3 (+ 6 (/ 4 5))))) (* 3 (- 6 2) (- 2 7))))
+(format #t "~f" my-result)
+(newline)
+; Exercise 1.3 Define a procedure that takes three numbers
+; as arguments and returns the sum of the squares of the two larger numbers. 
+
