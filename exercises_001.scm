@@ -1,3 +1,5 @@
+`(define (square x)(* x x))
+(define (sum-of-squares x y) (+ (square x) (square y)))
 ; Exercise 1.1: Below is a sequence of expressions.
 ; What is the result printed by the interpreter in response to each expression?
 ; Assume that the sequence is to be evaluated in the order in which it is presented.
@@ -60,5 +62,16 @@
 (format #t "~f" my-result)
 (newline)
 ; Exercise 1.3 Define a procedure that takes three numbers
-; as arguments and returns the sum of the squares of the two larger numbers. 
-
+; as arguments and returns the sum of the squares of the two larger numbers.
+(define (sum-of-largest a b c) (cond ((and (< a b) (< a c)) (sum-of-squares b c))
+					((and (< b a) (< b c)) (sum-of-squares a c))
+					(else (sum-of-squares a b))))
+(display "Sum of largest (1 2 2): ") ; 8 expected
+(display (sum-of-largest 1 2 2))
+(newline)
+(display "Sum of largest (3 2 3): ") ; 18 expected
+(display (sum-of-largest 3 2 3))
+(newline)
+(display "Sum of largest (4 2 1): ") ; 20 expected
+(display (sum-of-largest 4 2 1))
+(newline)
