@@ -1,3 +1,4 @@
+(use-modules (ice-9 format))
 (define (square x)(* x x))
 (define (sum-of-squares x y) (+ (square x) (square y)))
 ;; Exercise 1.1: Below is a sequence of expressions.
@@ -99,8 +100,8 @@
   (if (= x 0) 
       0 
       y))
-;; Then he evaluates the expression:
-(display (test 0 (p)))
+;; Then the evaluates the expression:
+;; (display (test 0 (p)))
 
 ;; What behavior will Ben observe with an interpreter that uses applicative-order evaluation? What behavior will he observe with an interpreter that uses normal-order evaluation? Explain your answer.
 ;; (Assume that the evaluation rule for the special form if is the same whether the interpreter is using normal or applicative order: The predicate expression is evaluated first, and the result determines whether to evaluate the consequent or the alternative expression.)
@@ -119,19 +120,19 @@
 
 ;; Exercise 1.6: Alyssa P. Hacker doesn’t see why if needs to be provided as a special form. “Why can’t I just define it as an ordinary procedure in terms of cond?” she asks.
 ;; -- Functions used in exercise
-;;(define (average x y) 
-;;  (/ (+ x y) 2))
-;;(define (good-enough? guess x)
-;;  (< (abs (- (square guess) x)) 0.001))
-;;(define (improve guess x)
-;;  (average guess (/ x guess)))
-;;
+(define (average x y) 
+  (/ (+ x y) 2))
+(define (good-enough? guess x)
+  (< (abs (- (square guess) x)) 0.001))
+(define (improve guess x)
+  (average guess (/ x guess)))
+
 ;; Alyssa’s friend Eva Lu Ator claims this can indeed be done, and she defines a new version of if:
-;;(define (new-if predicate 
-;;                then-clause 
-;;                else-clause)
-;;  (cond (predicate then-clause)
-;;        (else else-clause)))
+(define (new-if predicate 
+                then-clause 
+                else-clause)
+  (cond (predicate then-clause)
+        (else else-clause)))
 ;; Eva demonstrates the program for Alyssa:
 ;;(new-if (= 2 3) 0 5)
 ;;5
@@ -141,13 +142,17 @@
 ;;
 ;;Delighted, Alyssa uses new-if to rewrite the square-root program:
 ;;
-;;(define (sqrt-iter guess x)
-;;  (new-if (good-enough? guess x)
-;;          guess
-;;          (sqrt-iter (improve guess x) x)))
+(define (sqrt-iter guess x)
+  (new-if (good-enough? guess x)
+          guess
+          (sqrt-iter (improve guess x) x)))
+
+;; (display "(sqrt-iter 1 2): ")
+;; (display (sqrt-iter 1 2))
+;; (newline)
+;; ^ Runs forever
 ;;
 ;;What happens when Alyssa attempts to use this to compute square roots? Explain.
-;;Answer: Lets walk through it, step by step:
-;; First, we call it: (sqrt-iter 1 2)
-;; Then we use lazy evaluation: (new-if (good-enough? )1 2) guess (sqrt-iter (improve 1 2) 2))
-;; Then: (new-if (good-enough? )1 2) guess (sqrt-iter (improve 1 2) 2))
+;; The program run forever. Each part of the `new-if` needs to be resolved before evaluating
+;; the `new-if` procedure. One of those pieces is the `sqrt-iter` so it calls it self, then
+;; repeats this by trying to evalute the body of the `new-if` in there, and so forth.
